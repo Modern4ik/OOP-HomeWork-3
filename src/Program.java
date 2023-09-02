@@ -5,42 +5,49 @@ public class Program {
 
     private static Random random = new Random();
 
-    /**
-     * TODO: Переработать метод generateWorker. Метод должен возвращать случайного
-     *  сотрудника (Freelancer или Worker)
-     * @return
-     */
-    public static Worker generateWorker(){
-        String[] names = new String[] { "Анатолий", "Глеб", "Клим", "Мартин", "Лазарь", "Владлен", "Клим", "Панкратий", "Рубен", "Герман" };
-        String[] surNames = new String[] { "Григорьев", "Фокин", "Шестаков", "Хохлов", "Шубин", "Бирюков", "Копылов", "Горбунов", "Лыткин", "Соколов" };
+    public static Employee generateEmployee() {
+        String[] names = new String[] { "Анатолий", "Глеб", "Клим", "Мартин", "Лазарь", "Владлен", "Клим", "Панкратий",
+                "Рубен", "Герман" };
+        String[] surNames = new String[] { "Григорьев", "Фокин", "Шестаков", "Хохлов", "Шубин", "Бирюков", "Копылов",
+                "Горбунов", "Лыткин", "Соколов" };
 
-        int salaryIndex = random.nextInt(200, 500);
+        int employeeType = random.nextInt(2);
+        int salaryIndex = 0;
 
-        return new Worker(names[random.nextInt(names.length)], surNames[random.nextInt(surNames.length)], 100 * salaryIndex);
+        switch (employeeType) {
+            case 1:
+                int workedHours = random.nextInt(10, 80);
+                salaryIndex = 1500;
+                return new Freelancer(names[random.nextInt(names.length)], surNames[random.nextInt(surNames.length)],
+                        random.nextInt(18, 65), workedHours * salaryIndex);
+            default:
+                salaryIndex = random.nextInt(200, 500);
+                return new Worker(names[random.nextInt(names.length)], surNames[random.nextInt(surNames.length)],
+                        random.nextInt(18, 65), 160 * salaryIndex);
+        }
     }
 
-    public static Worker[] generateWorkers(int count){
-        Worker[] workers = new Worker[count];
-        for (int i = 0; i < count; i++){
-            workers[i] = generateWorker();
+    public static Employee[] generateEmployees(int count) {
+        Employee[] workers = new Employee[count];
+        for (int i = 0; i < count; i++) {
+            workers[i] = generateEmployee();
         }
         return workers;
     }
 
     public static void main(String[] args) {
 
-        Worker[] workers = generateWorkers(12);
+        Employee[] workers = generateEmployees(12);
 
-        for (Worker worker: workers) {
+        for (Employee worker : workers) {
             System.out.println(worker);
         }
 
-
-        Arrays.sort(workers/*, new SalaryComparator()*/);
+        Arrays.sort(workers, new AgeComparator());
 
         System.out.println();
 
-        for (Worker worker: workers) {
+        for (Employee worker : workers) {
             System.out.println(worker);
         }
 
